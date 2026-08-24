@@ -1,0 +1,17 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+**/*.html
+tests-results
+.vite-inspect
+
+# Ignore auto-generated files:
+src/routeTree.gen.ts
+
+# Vendored agent skills and generated dependency state
+.ai
+.claude
+.codex
+pnpm-lock.yaml

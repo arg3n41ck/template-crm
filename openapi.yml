@@ -1,0 +1,614 @@
+openapi: 3.0.3
+info:
+  title: JSONPlaceholder API
+  description: Fake Online REST API for Testing and Prototyping
+  version: 1.0.0
+
+servers:
+  - url: https://jsonplaceholder.typicode.com
+    description: JSONPlaceholder server
+
+paths:
+  /posts:
+    get:
+      operationId: getPosts
+      summary: Get all posts
+      tags:
+        - Posts
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter posts by user ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+
+    post:
+      operationId: createPost
+      summary: Create a new post
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+  /posts/{id}:
+    get:
+      operationId: getPost
+      summary: Get a post by ID
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+
+    put:
+      operationId: updatePost
+      summary: Update a post
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequest'
+      responses:
+        '200':
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+    delete:
+      operationId: deletePost
+      summary: Delete a post
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      responses:
+        '200':
+          description: Post deleted
+
+  /posts/{postId}/comments:
+    get:
+      operationId: getPostComments
+      summary: Get comments for a post
+      tags:
+        - Comments
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /comments:
+    get:
+      operationId: getComments
+      summary: Get all comments
+      tags:
+        - Comments
+      parameters:
+        - name: postId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter comments by post ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /users:
+    get:
+      operationId: getUsers
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /users/{id}:
+    get:
+      operationId: getUser
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+  /todos:
+    get:
+      operationId: getTodos
+      summary: Get all todos
+      tags:
+        - Todos
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter todos by user ID
+        - name: completed
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filter by completion status
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+
+  # ===========================================
+  # Template API - Пример для создания модулей
+  # ===========================================
+  /templates:
+    get:
+      operationId: getTemplates
+      summary: Get all templates
+      tags:
+        - Templates
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search by name
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [active, inactive, draft]
+          description: Filter by status
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+          description: Page number
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Items per page
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateListResponse'
+
+    post:
+      operationId: createTemplate
+      summary: Create a new template
+      tags:
+        - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+      responses:
+        '201':
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+  /templates/{id}:
+    get:
+      operationId: getTemplate
+      summary: Get a template by ID
+      tags:
+        - Templates
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Template ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '404':
+          description: Template not found
+
+    patch:
+      operationId: updateTemplate
+      summary: Update a template
+      tags:
+        - Templates
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Template ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateRequest'
+      responses:
+        '200':
+          description: Template updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+    delete:
+      operationId: deleteTemplate
+      summary: Delete a template
+      tags:
+        - Templates
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Template ID
+      responses:
+        '204':
+          description: Template deleted
+
+components:
+  schemas:
+    Post:
+      type: object
+      required:
+        - id
+        - userId
+        - title
+        - body
+      properties:
+        id:
+          type: integer
+          description: Post ID
+        userId:
+          type: integer
+          description: User ID who created the post
+        title:
+          type: string
+          description: Post title
+        body:
+          type: string
+          description: Post body content
+
+    CreatePostRequest:
+      type: object
+      required:
+        - userId
+        - title
+        - body
+      properties:
+        userId:
+          type: integer
+          description: User ID who creates the post
+        title:
+          type: string
+          description: Post title
+        body:
+          type: string
+          description: Post body content
+
+    UpdatePostRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: User ID who creates the post
+        title:
+          type: string
+          description: Post title
+        body:
+          type: string
+          description: Post body content
+
+    Comment:
+      type: object
+      required:
+        - id
+        - postId
+        - name
+        - email
+        - body
+      properties:
+        id:
+          type: integer
+          description: Comment ID
+        postId:
+          type: integer
+          description: Post ID the comment belongs to
+        name:
+          type: string
+          description: Comment title/name
+        email:
+          type: string
+          format: email
+          description: Commenter email
+        body:
+          type: string
+          description: Comment body content
+
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - username
+        - email
+      properties:
+        id:
+          type: integer
+          description: User ID
+        name:
+          type: string
+          description: User full name
+        username:
+          type: string
+          description: Username
+        email:
+          type: string
+          format: email
+          description: User email
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          description: Phone number
+        website:
+          type: string
+          description: Website URL
+        company:
+          $ref: '#/components/schemas/Company'
+
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        suite:
+          type: string
+        city:
+          type: string
+        zipcode:
+          type: string
+        geo:
+          $ref: '#/components/schemas/Geo'
+
+    Geo:
+      type: object
+      properties:
+        lat:
+          type: string
+        lng:
+          type: string
+
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+        catchPhrase:
+          type: string
+        bs:
+          type: string
+
+    Todo:
+      type: object
+      required:
+        - id
+        - userId
+        - title
+        - completed
+      properties:
+        id:
+          type: integer
+          description: Todo ID
+        userId:
+          type: integer
+          description: User ID
+        title:
+          type: string
+          description: Todo title
+        completed:
+          type: boolean
+          description: Completion status
+
+    # ===========================================
+    # Template Schemas - Пример для создания модулей
+    # ===========================================
+    Template:
+      type: object
+      required:
+        - id
+        - name
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Template ID
+        name:
+          type: string
+          description: Template name
+        description:
+          type: string
+          description: Template description
+        status:
+          type: string
+          enum: [active, inactive, draft]
+          description: Template status
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date
+
+    CreateTemplateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Template name
+        description:
+          type: string
+          description: Template description
+        status:
+          type: string
+          enum: [active, inactive, draft]
+          default: draft
+          description: Template status
+
+    UpdateTemplateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Template name
+        description:
+          type: string
+          description: Template description
+        status:
+          type: string
+          enum: [active, inactive, draft]
+          description: Template status
+
+    TemplateListResponse:
+      type: object
+      required:
+        - data
+        - total
+        - page
+        - limit
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        total:
+          type: integer
+          description: Total number of templates
+        page:
+          type: integer
+          description: Current page
+        limit:
+          type: integer
+          description: Items per page
