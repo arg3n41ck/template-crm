@@ -9,6 +9,10 @@ description: Use when creating, auditing, updating, or enforcing a project desig
 
 Maintain a durable design-system source of truth for product UI across web and mobile. The core deliverable is a filled `design.md` that explains not only token values, but why they exist, when to use each palette or component pattern, and how future UI work must stay consistent.
 
+## Project adaptation
+
+Use `docs/DESIGN_SYSTEM.md` as the canonical design record in this suite (CRM may link to `readme/DESIGN_SYSTEM.md`). Other wiki/design files below are optional references, not mandatory startup files. Extend the existing document rather than creating a second competing design system.
+
 ## Startup
 
 1. Read project memory first: `docs/wiki/index.md`, `docs/wiki/schema.md`, recent `docs/wiki/log.md`, relevant `FEATURE.md` files, and existing UI docs such as `docs/frontend/README.md`, `design-system.md`, `components.md`, `screens.md`, `ui-decisions.md`, and `audit-checklist.md`.

@@ -33,4 +33,12 @@
 
 ## Codebase Memory MCP
 
-- Project index: `Users-argenalimbaev-work-projects-ruflo-template-crm` (fast index refreshed 2026-08-24).
+- Project index: `Users-argenalimbaev-work-projects-template-crm` (fast index refreshed 2026-08-24).
+
+## Agent distribution
+
+- `docs/ARCHITECTURE.md`: modular boundaries and rule precedence.
+- `docs/AI_SKILLS.md`: installed skill profile.
+- `.agents/skills`, `.claude/skills`, `.codex/skills`: relative links to `.ai/skills`.
+
+Graph refresh after folder rename was unavailable (MCP transport closed). Paths above were verified from current source; refresh the graph before later broad code discovery.

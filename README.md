@@ -1,4 +1,4 @@
-# Ruflo CRM Template
+# Frontend CRM Template
 
 Production-oriented React SPA starter for CRM and dashboard projects.
 
@@ -69,3 +69,7 @@ Import accepted components through `@shared/ui` and utilities through `@shared/l
 - Skill audit: `readme/SKILLS_AUDIT.md`
 
 Project skills are stored once in `.ai/skills/`; `.claude/skills` and `.codex/skills` point to it.
+
+## AI-assisted work
+
+Start with `AGENTS.md`, then `docs/AI_SKILLS.md` and `docs/ARCHITECTURE.md`. Skills are included and loaded on demand, not installed as executable background agents. No framework migration or extra dependencies are required to use this starter.
