@@ -1,44 +1,9 @@
-## Storybook
+# Storybook 10
 
-В проекте для каждого компонента описываются стори-кейсы.
-Запросы на сервер мокаются с помощью storybook-addon-mock.
+Use `pnpm storybook` or `pnpm build:storybook`. Configuration lives beside this document; canonical global styles and Tailwind v4 are loaded into previews. Aliases match the application. Use CSF3 `Meta`/`StoryObj` from `@storybook/react-vite`, add explicit sample content and `tags: ['autodocs']` where useful.
 
-Файл со сторикейсами создает рядом с компонентом с расширением .stories.tsx
+Controls/actions are supplied by Storybook core; docs and links are explicit addons. Do not restore removed addon-essentials, addon-interactions, addons, blocks, test or theming packages from Storybook 7/8. If interaction spies are needed, import `fn` from `storybook/test`; do not rely on inferred action spies inside play functions.
 
-Запустить сторибук можно командой:
+Keep stories deterministic and free from live backend calls or third-party image dependencies. No mock service, theme decorator or browser interaction runner is claimed installed unless it exists in source. Built preview output is ignored. Telemetry is disabled in main config; CI also sets STORYBOOK_DISABLE_TELEMETRY.
 
-- `npm run storybook`
-
-Подробнее о [Storybook](/docs/storybook.md)
-
-Пример:
-
-```typescript jsx
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
-import { Button, ButtonSize, ButtonTheme } from './Button';
-import { Theme } from '@/shared/const/theme';
-
-export default {
-    title: 'shared/Button',
-    component: Button,
-    argTypes: {
-        backgroundColor: { control: 'color' },
-    },
-} as ComponentMeta<typeof Button>;
-
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-Primary.args = {
-    children: 'Text',
-};
-
-export const Clear = Template.bind({});
-Clear.args = {
-    children: 'Text',
-    theme: ButtonTheme.CLEAR,
-};
-```
+Before changing tool versions run full `pnpm audit`, `pnpm peers check`, `pnpm verify`, `pnpm test:coverage`, and `pnpm build:storybook`. Inspect the built manager and each changed story in a browser. Storybook build warnings and test coverage gaps must be reported, not hidden.

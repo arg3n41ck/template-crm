@@ -11,7 +11,7 @@ Maintain a durable design-system source of truth for product UI across web and m
 
 ## Project adaptation
 
-Use `docs/DESIGN_SYSTEM.md` as the canonical design record in this suite (CRM may link to `readme/DESIGN_SYSTEM.md`). Other wiki/design files below are optional references, not mandatory startup files. Extend the existing document rather than creating a second competing design system.
+Use `docs/DESIGN_SYSTEM.md` as the canonical design record in this suite. Other wiki/design files below are optional references, not mandatory startup files. Extend the existing document rather than creating a second competing design system.
 
 ## Startup
 

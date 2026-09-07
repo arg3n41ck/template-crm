@@ -1,0 +1,16 @@
+.git
+node_modules
+dist
+.env
+.env.*
+.omx
+.codebase-memory
+graphify-out
+.venv-graphify
+.ai
+.agents
+.claude
+.codex
+.codex-harness
+.wiki
+*.log

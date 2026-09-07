@@ -29,13 +29,11 @@ import { Route as DashboardLocationsIndexRouteImport } from './pages/dashboard/l
 import { Route as DashboardLibraryIndexRouteImport } from './pages/dashboard/library/index'
 import { Route as DashboardHomeIndexRouteImport } from './pages/dashboard/home/index'
 import { Route as DashboardHistoryIndexRouteImport } from './pages/dashboard/history/index'
-import { Route as DashboardExampleIndexRouteImport } from './pages/dashboard/example/index'
 import { Route as DashboardEmployeesIndexRouteImport } from './pages/dashboard/employees/index'
 import { Route as DashboardDownloadsIndexRouteImport } from './pages/dashboard/downloads/index'
 import { Route as DashboardDictionaryIndexRouteImport } from './pages/dashboard/dictionary/index'
 import { Route as DashboardCashOutIndexRouteImport } from './pages/dashboard/cash-out/index'
 import { Route as AuthSignInIndexRouteImport } from './pages/auth/sign-in/index'
-import { Route as DashboardExampleExampleUuidIndexRouteImport } from './pages/dashboard/example/$exampleUuid/index'
 
 const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
@@ -145,11 +143,6 @@ const DashboardHistoryIndexRoute = DashboardHistoryIndexRouteImport.update({
   path: '/history/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-const DashboardExampleIndexRoute = DashboardExampleIndexRouteImport.update({
-  id: '/example/',
-  path: '/example/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any)
 const DashboardEmployeesIndexRoute = DashboardEmployeesIndexRouteImport.update({
   id: '/employees/',
   path: '/employees/',
@@ -176,12 +169,6 @@ const AuthSignInIndexRoute = AuthSignInIndexRouteImport.update({
   path: '/auth/sign-in/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardExampleExampleUuidIndexRoute =
-  DashboardExampleExampleUuidIndexRouteImport.update({
-    id: '/example/$exampleUuid/',
-    path: '/example/$exampleUuid/',
-    getParentRoute: () => DashboardLayoutRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -192,7 +179,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/dictionary': typeof DashboardDictionaryIndexRoute
   '/dashboard/downloads': typeof DashboardDownloadsIndexRoute
   '/dashboard/employees': typeof DashboardEmployeesIndexRoute
-  '/dashboard/example': typeof DashboardExampleIndexRoute
   '/dashboard/history': typeof DashboardHistoryIndexRoute
   '/dashboard/home': typeof DashboardHomeIndexRoute
   '/dashboard/library': typeof DashboardLibraryIndexRoute
@@ -210,7 +196,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/support': typeof DashboardSupportIndexRoute
   '/dashboard/tracking': typeof DashboardTrackingIndexRoute
   '/dashboard/transactions': typeof DashboardTransactionsIndexRoute
-  '/dashboard/example/$exampleUuid': typeof DashboardExampleExampleUuidIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -220,7 +205,6 @@ export interface FileRoutesByTo {
   '/dashboard/dictionary': typeof DashboardDictionaryIndexRoute
   '/dashboard/downloads': typeof DashboardDownloadsIndexRoute
   '/dashboard/employees': typeof DashboardEmployeesIndexRoute
-  '/dashboard/example': typeof DashboardExampleIndexRoute
   '/dashboard/history': typeof DashboardHistoryIndexRoute
   '/dashboard/home': typeof DashboardHomeIndexRoute
   '/dashboard/library': typeof DashboardLibraryIndexRoute
@@ -238,7 +222,6 @@ export interface FileRoutesByTo {
   '/dashboard/support': typeof DashboardSupportIndexRoute
   '/dashboard/tracking': typeof DashboardTrackingIndexRoute
   '/dashboard/transactions': typeof DashboardTransactionsIndexRoute
-  '/dashboard/example/$exampleUuid': typeof DashboardExampleExampleUuidIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -250,7 +233,6 @@ export interface FileRoutesById {
   '/dashboard/dictionary/': typeof DashboardDictionaryIndexRoute
   '/dashboard/downloads/': typeof DashboardDownloadsIndexRoute
   '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
-  '/dashboard/example/': typeof DashboardExampleIndexRoute
   '/dashboard/history/': typeof DashboardHistoryIndexRoute
   '/dashboard/home/': typeof DashboardHomeIndexRoute
   '/dashboard/library/': typeof DashboardLibraryIndexRoute
@@ -268,7 +250,6 @@ export interface FileRoutesById {
   '/dashboard/support/': typeof DashboardSupportIndexRoute
   '/dashboard/tracking/': typeof DashboardTrackingIndexRoute
   '/dashboard/transactions/': typeof DashboardTransactionsIndexRoute
-  '/dashboard/example/$exampleUuid/': typeof DashboardExampleExampleUuidIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -281,7 +262,6 @@ export interface FileRouteTypes {
     | '/dashboard/dictionary'
     | '/dashboard/downloads'
     | '/dashboard/employees'
-    | '/dashboard/example'
     | '/dashboard/history'
     | '/dashboard/home'
     | '/dashboard/library'
@@ -299,7 +279,6 @@ export interface FileRouteTypes {
     | '/dashboard/support'
     | '/dashboard/tracking'
     | '/dashboard/transactions'
-    | '/dashboard/example/$exampleUuid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -309,7 +288,6 @@ export interface FileRouteTypes {
     | '/dashboard/dictionary'
     | '/dashboard/downloads'
     | '/dashboard/employees'
-    | '/dashboard/example'
     | '/dashboard/history'
     | '/dashboard/home'
     | '/dashboard/library'
@@ -327,7 +305,6 @@ export interface FileRouteTypes {
     | '/dashboard/support'
     | '/dashboard/tracking'
     | '/dashboard/transactions'
-    | '/dashboard/example/$exampleUuid'
   id:
     | '__root__'
     | '/'
@@ -338,7 +315,6 @@ export interface FileRouteTypes {
     | '/dashboard/dictionary/'
     | '/dashboard/downloads/'
     | '/dashboard/employees/'
-    | '/dashboard/example/'
     | '/dashboard/history/'
     | '/dashboard/home/'
     | '/dashboard/library/'
@@ -356,7 +332,6 @@ export interface FileRouteTypes {
     | '/dashboard/support/'
     | '/dashboard/tracking/'
     | '/dashboard/transactions/'
-    | '/dashboard/example/$exampleUuid/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -507,13 +482,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHistoryIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/example/': {
-      id: '/dashboard/example/'
-      path: '/example'
-      fullPath: '/dashboard/example'
-      preLoaderRoute: typeof DashboardExampleIndexRouteImport
-      parentRoute: typeof DashboardLayoutRoute
-    }
     '/dashboard/employees/': {
       id: '/dashboard/employees/'
       path: '/employees'
@@ -549,13 +517,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/example/$exampleUuid/': {
-      id: '/dashboard/example/$exampleUuid/'
-      path: '/example/$exampleUuid'
-      fullPath: '/dashboard/example/$exampleUuid'
-      preLoaderRoute: typeof DashboardExampleExampleUuidIndexRouteImport
-      parentRoute: typeof DashboardLayoutRoute
-    }
   }
 }
 
@@ -565,7 +526,6 @@ interface DashboardLayoutRouteChildren {
   DashboardDictionaryIndexRoute: typeof DashboardDictionaryIndexRoute
   DashboardDownloadsIndexRoute: typeof DashboardDownloadsIndexRoute
   DashboardEmployeesIndexRoute: typeof DashboardEmployeesIndexRoute
-  DashboardExampleIndexRoute: typeof DashboardExampleIndexRoute
   DashboardHistoryIndexRoute: typeof DashboardHistoryIndexRoute
   DashboardHomeIndexRoute: typeof DashboardHomeIndexRoute
   DashboardLibraryIndexRoute: typeof DashboardLibraryIndexRoute
@@ -583,7 +543,6 @@ interface DashboardLayoutRouteChildren {
   DashboardSupportIndexRoute: typeof DashboardSupportIndexRoute
   DashboardTrackingIndexRoute: typeof DashboardTrackingIndexRoute
   DashboardTransactionsIndexRoute: typeof DashboardTransactionsIndexRoute
-  DashboardExampleExampleUuidIndexRoute: typeof DashboardExampleExampleUuidIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
@@ -592,7 +551,6 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardDictionaryIndexRoute: DashboardDictionaryIndexRoute,
   DashboardDownloadsIndexRoute: DashboardDownloadsIndexRoute,
   DashboardEmployeesIndexRoute: DashboardEmployeesIndexRoute,
-  DashboardExampleIndexRoute: DashboardExampleIndexRoute,
   DashboardHistoryIndexRoute: DashboardHistoryIndexRoute,
   DashboardHomeIndexRoute: DashboardHomeIndexRoute,
   DashboardLibraryIndexRoute: DashboardLibraryIndexRoute,
@@ -610,7 +568,6 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardSupportIndexRoute: DashboardSupportIndexRoute,
   DashboardTrackingIndexRoute: DashboardTrackingIndexRoute,
   DashboardTransactionsIndexRoute: DashboardTransactionsIndexRoute,
-  DashboardExampleExampleUuidIndexRoute: DashboardExampleExampleUuidIndexRoute,
 }
 
 const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(

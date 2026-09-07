@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -18,4 +21,10 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm audit
+      - run: pnpm peers check
       - run: pnpm verify
+      - run: pnpm test:coverage
+      - run: pnpm build:storybook
+        env:
+          STORYBOOK_DISABLE_TELEMETRY: 1

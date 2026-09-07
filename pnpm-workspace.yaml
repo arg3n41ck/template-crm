@@ -1,3 +1,8 @@
 allowBuilds:
   '@swc/core': true
   esbuild: true
+
+# Security floor: older TanStack/Solid dependencies pin vulnerable seroval 1.x.
+# Remove after all parent packages resolve >=1.5.3 without this override.
+overrides:
+  'seroval@<1.5.3': 1.6.4

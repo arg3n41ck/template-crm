@@ -1,75 +1,103 @@
-# Frontend CRM Template
+# Шаблон Frontend CRM
 
-Production-oriented React SPA starter for CRM and dashboard projects.
+Готовая основа React SPA для CRM и dashboard-проектов.
 
-## Stack
+## Стек
 
 - React 18 + TypeScript 5.7 + Vite 6
 - TanStack Router + TanStack Query
 - Tailwind CSS v4 + shadcn/ui (`new-york`)
-- Radix UI + Lucide icons + Sonner
-- Axios + OpenAPI code generation
+- Radix UI + иконки Lucide + Sonner
+- Axios + генерация OpenAPI
 - Vitest + Storybook + ESLint + Prettier
 
-## Requirements
+## Требования
 
-Node.js 22 and pnpm 11 through Corepack.
+Node.js 22.18+ (или 24+) и pnpm 11.21 через Corepack.
 
-## Start
+## Запуск
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-The dev server runs on `http://localhost:3000`.
+Dev-сервер: `http://localhost:3000`.
 
-## Commands
+## Команды
 
 ```bash
 pnpm lint:type        # TypeScript
 pnpm lint:eslint      # ESLint
-pnpm lint:prettier    # formatting check
-pnpm test:vitest      # tests
-pnpm build            # production build
-pnpm generate:api     # regenerate API types/hooks
-pnpm storybook        # component workspace
+pnpm lint:prettier    # проверка форматирования
+pnpm test:vitest      # тесты
+pnpm build            # production-сборка
+pnpm generate:api     # обновить типы/hooks API
+pnpm storybook        # каталог компонентов
 ```
 
-## Structure
+## Структура
 
 ```text
-src/app/                       app providers and router
-src/pages/                     thin TanStack file routes
-src/modules/                   domain features
-src/shared/ui/shadcn/          shadcn primitives
-src/shared/ui/                  reusable compositions
-src/shared/hooks/              reusable hooks
-src/shared/libs/               utilities
-src/shared/services/api/       API client and generated contracts
-src/shared/config/styles/      theme tokens and global CSS
-.ai/skills/                    canonical project skills
+src/app/                       providers и router приложения
+src/pages/                     тонкие файловые маршруты TanStack
+src/modules/                   доменные функции
+src/shared/ui/shadcn/          примитивы shadcn
+src/shared/ui/                 переиспользуемые композиции
+src/shared/hooks/              переиспользуемые hooks
+src/shared/libs/               утилиты
+src/shared/services/api/       API-клиент и сгенерированные контракты
+src/shared/config/styles/      theme tokens и глобальный CSS
+.ai/skills/                    канонические project skills
 ```
 
 ## shadcn/ui
 
-Configuration is in `components.json`. Add a primitive with:
+Конфигурация — в `components.json`. Добавление примитива:
 
 ```bash
 pnpm dlx shadcn@latest add dialog
 ```
 
-Import accepted components through `@shared/ui` and utilities through `@shared/libs`. Use semantic theme tokens rather than raw colors. Full UI/UX rules: [`readme/DESIGN_SYSTEM.md`](readme/DESIGN_SYSTEM.md).
+Разрешённые компоненты импортируйте через `@shared/ui`, утилиты — через `@shared/libs`. Используйте семантические theme tokens, а не raw colors. Полные правила UI/UX: [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
 
-## Agent context
+## Контекст агента
 
-- Rules: `AGENTS.md`, `CLAUDE.md`
-- Technical map: `.codex-harness/AGENT_GRAPH.md`
-- Verification: `.codex-harness/VERIFICATION.md`
-- Skill audit: `readme/SKILLS_AUDIT.md`
+- Правила: `AGENTS.md`, `CLAUDE.md`
+- Техническая карта: `.codex-harness/AGENT_GRAPH.md`
+- Проверки: `.codex-harness/VERIFICATION.md`
+- Инвентарь skills: `docs/AI_SKILLS.md`
 
-Project skills are stored once in `.ai/skills/`; `.claude/skills` and `.codex/skills` point to it.
+Project skills хранятся один раз в `.ai/skills/`; `.claude/skills` и `.codex/skills` содержат portable forwarding files.
 
-## AI-assisted work
+## Работа с ИИ
 
-Start with `AGENTS.md`, then `docs/AI_SKILLS.md` and `docs/ARCHITECTURE.md`. Skills are included and loaded on demand, not installed as executable background agents. No framework migration or extra dependencies are required to use this starter.
+Начните с `AGENTS.md`, затем изучите `docs/AI_SKILLS.md` и `docs/ARCHITECTURE.md`. Skills уже находятся в репозитории и загружаются по задаче — это не фоновые агенты и не требуют миграции стека или дополнительных зависимостей.
+
+## Сначала ИИ, но проект понятен человеку
+
+Любой coding agent начинает с [AGENTS.md](AGENTS.md); plugin конкретного провайдера не нужен. [Workflow](.ai/WORKFLOW.md) выбирает задачу, учитывает побочные эффекты, проверяет результат и хранит только нужный контекст. Человек использует обычную архитектуру и package-команды: AI runtime для запуска приложения не требуется.
+
+```bash
+node .ai/context.mjs --list
+node .ai/context.mjs --task ui --risk shared-ui
+node .ai/context.mjs --check
+```
+
+Это read-only помощники контекста и целостности: они не вызывают модель и не устанавливают пакеты. Skills загружаются по необходимости; wiki и Graphify отвечают за разные виды знаний. Недоступный browser/graph runtime обозначается как непроверенный, а не как успешная проверка.
+
+Текущая локальная проверка и ограничения релиза: [отчёт](docs/VERIFICATION_STATUS.md). Опциональная настройка локального графа: [Graphify](docs/GRAPHIFY.md).
+
+## Фильтры и новые AI-проверки
+
+Всего **42 skills**, загружаются по задаче, не все сразу. Полный состав — [AI_SKILLS](docs/AI_SKILLS.md). Правила search params, истории, пагинации, запросов и приватности — [URL_STATE](docs/URL_STATE.md). CRM сохраняет TanStack Router; второй URL-state механизм не устанавливается.
+
+## Подготовка к выпуску
+
+Актуальные проверки и ограничения — [VERIFICATION_STATUS](docs/VERIFICATION_STATUS.md). Локальные env/runtime/test-артефакты исключены из Git; `.env.example` разрешён. Версия шаблона: **v0.3.0**.
+
+## Проверка dev-инструментов
+
+Vitest/coverage/UI — 4.1.11, Happy DOM — 20.14.0, Storybook — 10.6.0. React остаётся 18; типы React выровнены с runtime.
+
+Перед выпуском: `pnpm audit`, `pnpm peers check`, `pnpm verify`, `pnpm test:coverage`, `pnpm build:storybook`. Эти проверки включены в CI; полный audit теперь проверяет и dev-зависимости.

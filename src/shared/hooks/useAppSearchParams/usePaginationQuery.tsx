@@ -4,57 +4,52 @@ import { getOffset } from '@shared/libs'
 
 import { PaginationConfig } from '../usePaginationState/usePaginationState'
 
-const pageParam = 'page'
-const limitParam = 'limit'
+const boundedInteger = (value: unknown, fallback: number, max: number) => {
+  if (typeof value !== 'string' && typeof value !== 'number') return fallback
+  if (!/^[1-9]\d*$/.test(String(value))) return fallback
+  const number = Number(value)
+  return Number.isSafeInteger(number) && number <= max ? number : fallback
+}
 
 export const usePaginationQuery = () => {
   const navigate = useNavigate()
-  const searchObject = (useSearch({ strict: false }) || {}) as Record<
-    string,
-    string
-  >
+  const search = useSearch({ strict: false }) as Record<string, unknown>
+  const page = boundedInteger(search.page, 1, 1_000_000)
+  const limit = boundedInteger(search.limit, 10, 100)
 
-  const searchParams = {
-    get: (key: string) => searchObject[key] || null,
-  }
-
-  const setSearchParams = (newParams: Record<string, string>) => {
+  const update = (patch: Record<string, string>) =>
     navigate({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      search: (() => newParams) as any,
+      // Compatibility boundary: legacy routes do not declare validateSearch.
+      // New routes must use a typed route-owned search schema.
+      search: ((previous: Record<string, unknown>) => ({
+        ...previous,
+        ...patch,
+      })) as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      hash: true,
+      resetScroll: false,
+    })
+  const setPage = (value: string) =>
+    update({ page: String(boundedInteger(value, 1, 1_000_000)) })
+  const setView = (value: string) => {
+    const next = boundedInteger(value, 10, 100)
+    if (next !== limit) return update({ limit: String(next), page: '1' })
+  }
+  const onChangeConfig = (config: PaginationConfig) => {
+    const nextLimit = boundedInteger(config.pageSize ?? limit, 10, 100)
+    return update({
+      page: String(
+        nextLimit === limit
+          ? boundedInteger(config.current ?? page, 1, 1_000_000)
+          : 1,
+      ),
+      limit: String(nextLimit),
     })
   }
-
-  const page = searchParams.get(pageParam) || '1'
-  const limit = searchParams.get(limitParam) || '10'
-
-  const set = (key: string, value: string) => {
-    const newParams = { ...searchObject, [key]: value }
-    setSearchParams(newParams)
-  }
-
-  const setPage = (value: string) => {
-    set(pageParam, value)
-  }
-  const setView = (value: string) => {
-    if (limit === value) {
-      return
-    }
-    set(limitParam, value)
-  }
-
-  const onChangeConfig = (config: PaginationConfig) => {
-    setPage(String(config.current || 1))
-
-    setView(String(config.pageSize || 1))
-  }
-
   const paginationConfig: PaginationConfig & { offset: string } = {
-    current: Number(page),
+    current: page,
     showSizeChanger: true,
-    pageSize: Number(limit),
-    offset: String(getOffset(Number(page), Number(limit))),
+    pageSize: limit,
+    offset: String(getOffset(page, limit)),
   }
-
   return { setPage, setView, paginationConfig, onChangeConfig }
 }

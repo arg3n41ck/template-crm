@@ -49,7 +49,33 @@ tests-results
 
 # Agent runtime/cache
 .omx/
-.code-review-graph/
 
 # Agent runtime/cache
 .codebase-memory/
+
+# Local knowledge tooling
+graphify-out/
+.venv-graphify/
+
+# Community release safety (shared kit policy)
+node_modules/
+dist/
+.next/
+coverage/
+test-results/
+playwright-report/
+.env
+.env.*
+!.env.example
+.omx/
+.codebase-memory/
+.venv-graphify/
+graphify-out/
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+*.log
+*.pem
+*.key
+.DS_Store
+.claude/settings.local.json

@@ -1,38 +1,29 @@
 import type { StorybookConfig } from '@storybook/react-vite'
-import path from 'path'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'node:path'
 import { mergeConfig } from 'vite'
 
 const config: StorybookConfig = {
-  stories: [
-    '../../../../src/**/*.mdx',
-    '../../../../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
+  stories: ['../../../**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-docs'],
   framework: {
     name: '@storybook/react-vite',
     options: {},
   },
-  docs: {
-    autodocs: true,
-    defaultName: 'Documentation',
-  },
-  viteFinal: async (config) => {
-    return mergeConfig(config, {
+  core: { disableTelemetry: true },
+  viteFinal: async (config) =>
+    mergeConfig(config, {
+      plugins: [tailwindcss()],
       resolve: {
         alias: {
-          '@shared': path.resolve(__dirname, '../../../shared'),
-          '@app': path.resolve(__dirname, '../../../app'),
-          '@pages': path.resolve(__dirname, '../../../pages'),
-          '@types': path.resolve(__dirname, '../../../types'),
-          '@modules': path.resolve(__dirname, '../../../modules'),
+          '@': path.resolve(import.meta.dirname, '../../../'),
+          '@shared': path.resolve(import.meta.dirname, '../../'),
+          '@app': path.resolve(import.meta.dirname, '../../../app'),
+          '@pages': path.resolve(import.meta.dirname, '../../../pages'),
+          '@modules': path.resolve(import.meta.dirname, '../../../modules'),
         },
       },
-    })
-  },
+    }),
 }
 
 export default config

@@ -1,0 +1,4 @@
+@import '../styles/global.css';
+
+/* Storybook's Vite root differs from the app; explicitly scan app components. */
+@source '../../../';

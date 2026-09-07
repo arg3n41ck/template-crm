@@ -1,5 +1,5 @@
 import { AvatarProfile } from '.'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta = {
   title: '/shared/ui/avatar',
@@ -28,34 +28,6 @@ export const AvatarProfileExample: Story = {
   args: {
     subtitle: 'subtitle',
     title: 'title',
-    src: 'https://i.pravatar.cc/300',
     size: 55,
   },
-  // render: (args) => (
-  //   <AppearanceAnimation {...args}>
-  //     <div style={{ width: '300px', height: '300px', background: 'red' }}>
-  //       Привет
-  //     </div>
-  //   </AppearanceAnimation>
-  // ),
 }
-
-// export const Secondary: Story = {
-//   args: {
-//     label: 'Button',
-//   },
-// }
-
-// export const Large: Story = {
-//   args: {
-//     size: 'large',
-//     label: 'Button',
-//   },
-// }
-
-// export const Small: Story = {
-//   args: {
-//     size: 'small',
-//     label: 'Button',
-//   },
-// }

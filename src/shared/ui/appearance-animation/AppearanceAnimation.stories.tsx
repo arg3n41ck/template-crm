@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { AppearanceAnimation } from './AppearanceAnimation'
 
@@ -20,32 +20,6 @@ type Story = StoryObj<typeof meta>
 export const Bottom: Story = {
   args: {
     animationVariant: 'bottom',
+    children: 'Animated content',
   },
-  // render: (args) => (
-  //   <AppearanceAnimation {...args}>
-  //     <div style={{ width: '300px', height: '300px', background: 'red' }}>
-  //       Привет
-  //     </div>
-  //   </AppearanceAnimation>
-  // ),
 }
-
-// export const Secondary: Story = {
-//   args: {
-//     label: 'Button',
-//   },
-// }
-
-// export const Large: Story = {
-//   args: {
-//     size: 'large',
-//     label: 'Button',
-//   },
-// }
-
-// export const Small: Story = {
-//   args: {
-//     size: 'small',
-//     label: 'Button',
-//   },
-// }
