@@ -1,9 +1,8 @@
+import { cn } from 'cn'
 import { XIcon } from 'lucide-react'
 import { Dialog as SheetPrimitive } from 'radix-ui'
 
 import * as React from 'react'
-
-import { cn } from '@/shared/libs/utils'
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return (
@@ -47,39 +46,37 @@ function SheetPortal({
   )
 }
 
-const SheetOverlay = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(function SheetOverlay({ className, ...props }, ref) {
+function SheetOverlay({
+  className,
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
   return (
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
-      ref={ref}
       className={cn(
-        'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'fixed inset-0 z-50 bg-overlay data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
         className,
       )}
       {...props}
     />
   )
-})
+}
 
-const SheetContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content> & {
-    side?: 'top' | 'right' | 'bottom' | 'left'
-    showCloseButton?: boolean
-  }
->(function SheetContent(
-  { className, children, side = 'right', showCloseButton = true, ...props },
-  ref,
-) {
+function SheetContent({
+  className,
+  children,
+  side = 'right',
+  showCloseButton = true,
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Content> & {
+  side?: 'top' | 'right' | 'bottom' | 'left'
+  showCloseButton?: boolean
+}) {
   return (
     <SheetPortal>
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
-        ref={ref}
         className={cn(
           'fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500',
           side === 'right' &&
@@ -98,13 +95,13 @@ const SheetContent = React.forwardRef<
         {showCloseButton && (
           <SheetPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary">
             <XIcon className="size-4" />
-            <span className="sr-only">Закрыть</span>
+            <span className="sr-only">Close</span>
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Content>
     </SheetPortal>
   )
-})
+}
 
 function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (

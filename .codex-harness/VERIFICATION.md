@@ -13,6 +13,8 @@ pnpm verify
 - TypeScript/component change: lint + typecheck + build.
 - Dependency/build config: clean install + lint + typecheck + build.
 - UI/theme/layout: default checks plus browser smoke at desktop and mobile widths.
+- shadcn registry addition: run `pnpm ui:check <component>` before `pnpm ui:add <component>`, then default checks; CRM dashboard-shell changes also need navigation/collapse/mobile smoke.
+- palette, theme, or registry color changes: run `pnpm test:theme`; it verifies palette mappings, shadcn aliases, and rejects raw Tailwind colors in registry primitives.
 - API/data/route: focused test or direct request/route smoke plus the default checks.
 
 ## Browser smoke

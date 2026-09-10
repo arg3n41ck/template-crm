@@ -1,8 +1,10 @@
-# Проверки перед выпуском — 2026-09-07
+# Проверки перед выпуском — 2026-09-10
 
-Версия: **v0.3.0**. Ниже — локальные проверки перед публикацией; итог HTTPS/CI см. в релизном отчёте hub.
+Версия: **v0.4.0**. Ниже — локальные проверки перед публикацией; итог HTTPS/CI см. в релизном отчёте hub.
 
 - `pnpm install --frozen-lockfile --ignore-scripts`, `pnpm verify`: PASS после security-обновлений.
+- `pnpm test:theme`: PASS; CRM palette → semantic tokens → Tailwind/shadcn, raw registry colors запрещены.
+- `pnpm ui:check hover-card`: PASS; новый primitive направляется в `src/shared/ui/shadcn`.
 - Production dependency audit: 0 advisories.
 - Full dependency audit: 0 advisories после миграции dev-toolchain.
 - Manifest/portable adapters/common kit и release-preflight: PASS.

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from '@tanstack/react-router'
-import { MoreVertical, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { ChevronDown, Circle, MoreVertical, Plus } from 'lucide-react'
 
 import { ReactNode, useMemo, useState } from 'react'
 
@@ -11,24 +11,92 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   LogoMain,
-  Separator,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
+  SidebarSeparator,
+  useSidebar,
 } from '@shared/ui'
-
-import { MenuItem } from './MenuItem'
-import { SectionHeader } from './SectionHeader'
-import './Sider.css'
-import { SubMenuItem } from './SubMenuItem'
 
 export interface SiderProps {
   children?: ReactNode
   className?: string
 }
 
+interface MenuSectionProps {
+  title: string
+  items: SideMenuItem[]
+  isOpen: boolean
+  onOpenChange: (open: boolean) => void
+  renderMenu: (items: SideMenuItem[], allowChildren?: boolean) => ReactNode
+  allowChildren?: boolean
+  showAdd?: boolean
+  collapsed: boolean
+}
+
+function MenuSection({
+  title,
+  items,
+  isOpen,
+  onOpenChange,
+  renderMenu,
+  allowChildren,
+  showAdd,
+  collapsed,
+}: MenuSectionProps) {
+  return (
+    <Collapsible
+      open={collapsed || isOpen}
+      onOpenChange={onOpenChange}
+    >
+      <SidebarGroup>
+        <SidebarGroupLabel asChild>
+          <CollapsibleTrigger className="cursor-pointer gap-2">
+            <ChevronDown
+              className={cn('transition-transform', !isOpen && '-rotate-90')}
+            />
+            <span>{title}</span>
+          </CollapsibleTrigger>
+        </SidebarGroupLabel>
+        {showAdd && (
+          <SidebarGroupAction aria-label={`Добавить в раздел ${title}`}>
+            <Plus />
+          </SidebarGroupAction>
+        )}
+        <CollapsibleContent asChild>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderMenu(items, allowChildren)}</SidebarMenu>
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
+  )
+}
+
 export function SiderDashboard(props: SiderProps) {
   const navigate = useNavigate()
-  const [collapsed, setCollapsed] = useState(false)
+  const { state, isMobile, setOpenMobile } = useSidebar()
   const [mainMenuOpen, setMainMenuOpen] = useState(true)
   const [secondMenuOpen, setSecondMenuOpen] = useState(true)
   const [helpMenuOpen, setHelpMenuOpen] = useState(true)
@@ -37,6 +105,7 @@ export function SiderDashboard(props: SiderProps) {
   )
   const { pathname } = useLocation()
   const rootPath = useMemo(() => pathname.split('/')?.[2], [pathname])
+  const collapsed = state === 'collapsed' && !isMobile
 
   const isChildActive = (item: SideMenuItem) =>
     Boolean(item.children?.some((child) => rootPath === child.key))
@@ -45,10 +114,7 @@ export function SiderDashboard(props: SiderProps) {
     if (!parentKey) setExpandedItems({})
     const route = ROUTES.dashboard[key as keyof typeof ROUTES.dashboard]
     navigate({ to: route ?? `/dashboard/${key}` })
-  }
-
-  const toggleExpand = (key: string) => {
-    setExpandedItems((previous) => (previous[key] ? {} : { [key]: true }))
+    setOpenMobile(false)
   }
 
   const renderMenu = (items: SideMenuItem[], allowChildren = false) =>
@@ -57,163 +123,160 @@ export function SiderDashboard(props: SiderProps) {
       const isOpen = Boolean(expandedItems[item.key])
       const isActive = rootPath === item.key || isChildActive(item)
 
-      return (
-        <div
-          key={item.key}
-          className={cn(
-            'rounded-lg',
-            !collapsed && allowChildren && hasChildren && isOpen && 'bg-card',
-          )}
-        >
-          <MenuItem
-            item={item}
-            isSelected={isActive}
-            collapsed={collapsed}
-            isExpanded={isOpen}
-            onClick={() => handleMenuClick(item.key)}
-            onToggleExpand={() => toggleExpand(item.key)}
-          />
-          {!collapsed && allowChildren && hasChildren && (
-            <div
-              className={cn(
-                'grid transition-[grid-template-rows] duration-200 ease-in-out',
-                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
-              )}
-            >
-              <div className="overflow-hidden">
-                <div className="flex flex-col px-2 pb-2">
+      if (allowChildren && hasChildren && !collapsed) {
+        return (
+          <Collapsible
+            key={item.key}
+            asChild
+            open={isOpen}
+            onOpenChange={(open) =>
+              setExpandedItems(open ? { [item.key]: true } : {})
+            }
+          >
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton
+                  isActive={isActive}
+                  tooltip={item.label}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                  <ChevronDown
+                    className={cn(
+                      'ml-auto transition-transform',
+                      !isOpen && '-rotate-90',
+                    )}
+                  />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
                   {item.children?.map((child) => (
-                    <SubMenuItem
-                      key={child.key}
-                      label={child.label}
-                      isSelected={rootPath === child.key}
-                      onClick={() => handleMenuClick(child.key, item.key)}
-                    />
+                    <SidebarMenuSubItem key={child.key}>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={rootPath === child.key}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => handleMenuClick(child.key, item.key)}
+                        >
+                          <Circle className="size-2 fill-current" />
+                          <span>{child.label}</span>
+                        </button>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
                   ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+        )
+      }
+
+      return (
+        <SidebarMenuItem key={item.key}>
+          <SidebarMenuButton
+            type="button"
+            isActive={isActive}
+            tooltip={item.label}
+            onClick={() => handleMenuClick(item.key)}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
       )
     })
 
   return (
-    <aside
-      className={cn(
-        'navWrapper flex h-full shrink-0 flex-col border-r bg-sidebar text-sidebar-foreground transition-[width] duration-300',
-        collapsed ? 'w-17' : 'w-[280px]',
-        props.className,
-      )}
+    <Sidebar
+      collapsible="icon"
+      className={props.className}
+      aria-label="Основная навигация"
     >
-      <div className="flex items-center border-b border-sidebar-border">
-        {!collapsed && (
-          <div className="min-w-0 flex-1">
-            <LogoMain />
-          </div>
-        )}
-        <div
-          className={cn(
-            'flex items-center',
-            collapsed ? 'w-full justify-center px-3 py-3' : 'pr-3',
-          )}
-        >
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed((value) => !value)}
-            aria-label={collapsed ? 'Развернуть меню' : 'Свернуть меню'}
-          >
-            {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-          </Button>
-        </div>
-      </div>
+      <SidebarHeader className="justify-center border-b border-sidebar-border p-0">
+        <LogoMain
+          showOnlyLogo={collapsed}
+          className={cn('min-h-16', collapsed && 'justify-center px-0')}
+        />
+      </SidebarHeader>
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-        <nav
-          className="flex flex-1 flex-col"
-          aria-label="Основная навигация"
-        >
-          <div className="px-3 py-2">
-            <SectionHeader
-              title="ОСНОВНОЕ"
-              collapsed={collapsed}
-              showChevron
-              showPlus
-              isOpen={mainMenuOpen}
-              onToggle={() => setMainMenuOpen((value) => !value)}
-            />
-            {mainMenuOpen && (
-              <div className="flex flex-col">{renderMenu(mainMenu, true)}</div>
-            )}
-          </div>
-
-          <Separator />
-
-          <div className="px-3 py-2">
-            <SectionHeader
-              title="УПРАВЛЕНИЕ"
-              collapsed={collapsed}
-              showChevron
-              isOpen={secondMenuOpen}
-              onToggle={() => setSecondMenuOpen((value) => !value)}
-            />
-            {secondMenuOpen && (
-              <div className="flex flex-col">{renderMenu(secondMenu)}</div>
-            )}
-          </div>
-
-          <div className="flex-1" />
-          <Separator />
-
-          <div className="px-3 py-2">
-            <SectionHeader
-              title="ПОМОЩЬ"
-              collapsed={collapsed}
-              showChevron
-              isOpen={helpMenuOpen}
-              onToggle={() => setHelpMenuOpen((value) => !value)}
-            />
-            {helpMenuOpen && (
-              <div className="flex flex-col">{renderMenu(helpMenu)}</div>
-            )}
-          </div>
+      <SidebarContent>
+        <nav aria-label="Разделы панели управления">
+          <MenuSection
+            title="ОСНОВНОЕ"
+            items={mainMenu}
+            isOpen={mainMenuOpen}
+            onOpenChange={setMainMenuOpen}
+            renderMenu={renderMenu}
+            allowChildren
+            showAdd
+            collapsed={collapsed}
+          />
+          <SidebarSeparator />
+          <MenuSection
+            title="УПРАВЛЕНИЕ"
+            items={secondMenu}
+            isOpen={secondMenuOpen}
+            onOpenChange={setSecondMenuOpen}
+            renderMenu={renderMenu}
+            collapsed={collapsed}
+          />
+          <SidebarSeparator />
+          <MenuSection
+            title="ПОМОЩЬ"
+            items={helpMenu}
+            isOpen={helpMenuOpen}
+            onOpenChange={setHelpMenuOpen}
+            renderMenu={renderMenu}
+            collapsed={collapsed}
+          />
         </nav>
+      </SidebarContent>
 
-        <div
-          className={cn(
-            'm-3 flex items-center rounded-lg bg-sidebar-accent',
-            collapsed ? 'justify-center p-2' : 'gap-3 p-2',
-          )}
-        >
-          <Avatar className="size-9">
-            <AvatarImage
-              src="/svg/default-avatar.svg"
-              alt="Алексей"
-            />
-            <AvatarFallback>А</AvatarFallback>
-          </Avatar>
-          {!collapsed && (
-            <>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs text-muted-foreground">
-                  subtext
-                </p>
-                <p className="truncate text-sm font-medium">Алексей</p>
-              </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Меню пользователя"
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  tooltip="Меню пользователя"
+                >
+                  <Avatar className="size-8 rounded-lg">
+                    <AvatarImage
+                      src="/svg/default-avatar.svg"
+                      alt="Алексей"
+                    />
+                    <AvatarFallback className="rounded-lg">А</AvatarFallback>
+                  </Avatar>
+                  <span className="grid min-w-0 flex-1 text-left leading-tight">
+                    <span className="truncate text-sm font-medium">
+                      Алексей
+                    </span>
+                    <span className="truncate text-xs text-muted-foreground">
+                      subtext
+                    </span>
+                  </span>
+                  <MoreVertical className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="right"
+                align="end"
+                className="min-w-56"
               >
-                <MoreVertical />
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-    </aside>
+                <DropdownMenuItem>Профиль</DropdownMenuItem>
+                <DropdownMenuItem>Настройки</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive">Выйти</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
   )
 }

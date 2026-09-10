@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Input,
+  Separator,
+  SidebarTrigger,
 } from '@shared/ui'
 
 const pageTitleMap: Record<string, string> = Object.fromEntries(
@@ -36,7 +38,17 @@ export function HeaderDashboard() {
 
   return (
     <header className="flex w-full items-center justify-between gap-4 border-b bg-background px-4 py-4 lg:px-10">
-      <h1 className="text-lg font-bold leading-6">{pageTitle}</h1>
+      <div className="flex min-w-0 items-center gap-2">
+        <SidebarTrigger
+          className="shrink-0"
+          aria-label="Переключить боковую панель"
+        />
+        <Separator
+          orientation="vertical"
+          className="h-4"
+        />
+        <h1 className="truncate text-lg font-bold leading-6">{pageTitle}</h1>
+      </div>
 
       <div className="flex items-center gap-2 lg:gap-4">
         <div className="relative hidden w-64 lg:block">

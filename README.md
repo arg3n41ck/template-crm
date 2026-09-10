@@ -4,7 +4,7 @@
 
 ## Стек
 
-- React 18 + TypeScript 5.7 + Vite 6
+- React 19 + TypeScript 5.7 + Vite 6
 - TanStack Router + TanStack Query
 - Tailwind CSS v4 + shadcn/ui (`new-york`)
 - Radix UI + иконки Lucide + Sonner
@@ -53,13 +53,14 @@ src/shared/config/styles/      theme tokens и глобальный CSS
 
 ## shadcn/ui
 
-Конфигурация — в `components.json`. Добавление примитива:
+Конфигурация — в `components.json`. Часто используемые примитивы уже подготовлены; dashboard shell использует официальный `Sidebar` и его mobile `Sheet`, tooltip и keyboard toggle. Остальные компоненты добавляйте через закреплённый CLI:
 
 ```bash
-pnpm dlx shadcn@latest add dialog
+pnpm ui:check dialog
+pnpm ui:add dialog
 ```
 
-Разрешённые компоненты импортируйте через `@shared/ui`, утилиты — через `@shared/libs`. Используйте семантические theme tokens, а не raw colors. Полные правила UI/UX: [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
+Компоненты импортируйте через `@shared/ui`, утилиты — через `@shared/libs`. Палитра редактируется только в `src/shared/config/styles/palette.css`; shadcn-компоненты автоматически получают её через semantic tokens. Полные правила UI/UX: [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
 
 ## Контекст агента
 
@@ -94,7 +95,7 @@ node .ai/context.mjs --check
 
 ## Подготовка к выпуску
 
-Актуальные проверки и ограничения — [VERIFICATION_STATUS](docs/VERIFICATION_STATUS.md). Локальные env/runtime/test-артефакты исключены из Git; `.env.example` разрешён. Версия шаблона: **v0.3.0**.
+Актуальные проверки и ограничения — [VERIFICATION_STATUS](docs/VERIFICATION_STATUS.md). Локальные env/runtime/test-артефакты исключены из Git; `.env.example` разрешён. Версия шаблона: **v0.4.0**.
 
 ## Проверка dev-инструментов
 

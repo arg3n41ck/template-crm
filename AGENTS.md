@@ -22,15 +22,16 @@ For new product work, read `docs/PROJECT_BRIEF.md` if present and use `project-k
 
 ## Architecture
 
-- React 18, Vite, TanStack Router/Query, Tailwind CSS v4, shadcn/ui, Axios/OpenAPI, Vitest.
+- React 19, Vite, TanStack Router/Query, Tailwind CSS v4, shadcn/ui, Axios/OpenAPI, Vitest.
 - `src/app` composition/router; `src/pages` thin routes; `src/modules` business features; `src/shared/ui/shadcn` primitives; `src/shared/services/api` contracts.
+- The ready dashboard shell uses the official shadcn sidebar primitives; preserve its responsive sheet, keyboard toggle, tooltip and token behavior.
 - Preserve feature-sliced boundaries. Pages stay thin. Generated API code changes only through `pnpm generate:api` after contract verification.
 
 ## UI/UX
 
 - shadcn/ui source is owned by this repository; add primitives with the shadcn CLI instead of hand-copying registry code.
 - Compose product components outside the primitive folder. Do not put business logic into shadcn primitives.
-- Use semantic theme tokens; avoid hardcoded colors and duplicate one-off UI primitives.
+- `src/shared/config/styles/palette.css` is the color source of truth. Map palette values to semantic tokens there; product and shadcn code must use semantic classes, never raw Tailwind colors.
 - Use Lucide icons for standard interface symbols. Keep focus, keyboard behavior, loading, empty and error states accessible.
 - For UI work, consult `ui-ux-pro-max`, `design-system-steward`, `frontend-design`, and `frontend-error-ux` as needed.
 

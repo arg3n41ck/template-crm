@@ -117,6 +117,19 @@ export default tseslint.config(
     },
   },
   {
+    files: [
+      'src/shared/ui/shadcn/**/*.{ts,tsx}',
+      'src/shared/hooks/use-mobile.ts',
+    ],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/naming-convention': 'off',
+      'jsx-a11y/anchor-has-content': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+    },
+  },
+  {
     ignores: [
       'dist',
       'node_modules',

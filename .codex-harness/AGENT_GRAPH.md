@@ -3,14 +3,15 @@
 ## Project
 
 - Template: CRM dashboard template
-- Stack: React 18, Vite, TanStack Router/Query, Tailwind CSS v4, shadcn/ui, Axios/OpenAPI, Vitest
+- Stack: React 19, Vite, TanStack Router/Query, Tailwind CSS v4, shadcn/ui, Axios/OpenAPI, Vitest
 - Package manager: pnpm 11 via Corepack
 
 ## Source map
 
 - `src/app` composition/router; `src/pages` thin routes; `src/modules` business features; `src/shared/ui/shadcn` primitives; `src/shared/services/api` contracts.
 - `src/modules/Dashboard/ui/DashboardOverview.tsx`: ready CRM dashboard composition and demo data.
-- `components.json`: shadcn registry and alias configuration.
+- `src/modules/common/DashboardLayout` + `SiderDashboard` + `HeaderDashboard`: responsive dashboard shell built on shadcn Sidebar, Sheet, Menu, Tooltip, Collapsible, Dropdown and Avatar primitives.
+- `components.json`: shadcn registry and alias configuration. `src/shared/config/styles/palette.css` owns CRM primitive colors and light/dark semantic mappings; `global.css` exposes them to Tailwind.
 - `.ai/skills`: canonical project-local agent skills.
 - `docs/AI_SKILLS.md`: skill selection and overlap notes.
 - `docs/DESIGN_SYSTEM.md`: UI ownership and token rules.
@@ -49,7 +50,7 @@ Codebase Memory MCP was refreshed during kit verification. Graph availability re
 - `.ai/skills/project-documentation-wiki`: business knowledge in `.wiki/`; read its index before substantive tasks.
 - Canonical skills have portable forwarders for supported agent clients.
 
-Installed workflow inventory and task triggers are listed in `docs/AI_SKILLS.md` and `.ai/workflows.json`. No application architecture or runtime dependency changed.
+Installed workflow inventory and task triggers are listed in `docs/AI_SKILLS.md` and `.ai/workflows.json`. The frontend architecture follows the canonical app/modules/shared contract; verify source paths after future moves.
 
 ## Context routing
 
